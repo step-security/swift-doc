@@ -73,29 +73,3 @@ MIT
 [alamofire wiki]: https://github.com/SwiftDocOrg/Alamofire/wiki
 [swiftsemantics html]: https://swift-doc-preview.netlify.app
 [github wiki]: https://help.github.com/en/github/building-a-strong-community/about-wikis
-[github actions]: https://github.com/features/actions
-[swiftsyntax]: https://github.com/apple/swift-syntax
-[swiftsemantics]: https://github.com/SwiftDocOrg/SwiftSemantics
-[swiftmarkup]: https://github.com/SwiftDocOrg/SwiftMarkup
-[commonmark]: https://github.com/SwiftDocOrg/CommonMark
-[github-wiki-publish-action]: https://github.com/SwiftDocOrg/github-wiki-publish-action
-[open an issue]: https://github.com/SwiftDocOrg/swift-doc/issues/new
-[jazzy]: https://github.com/realm/jazzy
-[swift number protocols diagram]: https://nshipster.com/propertywrapper/#swift-number-protocols
-[protocol-oriented programming]: https://asciiwwdc.com/2015/sessions/408
-[apple documentation]: https://developer.apple.com/documentation
-[se-0195]: https://github.com/apple/swift-evolution/blob/master/proposals/0195-dynamic-member-lookup.md
-[se-o258]: https://github.com/apple/swift-evolution/blob/master/proposals/0258-property-wrappers.md
-[se-xxxx]: https://github.com/apple/swift-evolution/blob/9992cf3c11c2d5e0ea20bee98657d93902d5b174/proposals/XXXX-function-builders.md
-[swiftdoc.org]: https://swiftdoc.org
-[jazzy swiftsemantics]: https://swift-semantics-jazzy.netlify.com
-[swift-doc swiftsemantics]: https://github.com/SwiftDocOrg/SwiftSemantics/wiki
-[@natecook1000]: https://github.com/natecook1000
-[nshipster]: https://nshipster.com
-[dependency hell]: https://github.com/apple/swift-package-manager/tree/master/Documentation#dependency-hell
-[pcre]: https://en.wikipedia.org/wiki/Perl_Compatible_Regular_Expressions
-[dot]: https://en.wikipedia.org/wiki/DOT_(graph_description_language)
-[graphviz]: https://www.graphviz.org
-[libxml2]: https://en.wikipedia.org/wiki/Libxml2
-[docker]: https://www.docker.com
-[semver]: https://semver.org
