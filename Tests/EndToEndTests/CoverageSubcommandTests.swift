@@ -12,7 +12,7 @@ final class CoverageSubcommandTests: XCTestCase {
                         ]
         ) { result in
             XCTAssertEqual(result.terminationStatus, EXIT_SUCCESS)
-            XCTAssertEqual(result.output?.starts(with: "Total"), true)
+            XCTAssertEqual(result.output?.contains("Total"), true)
             XCTAssertEqual(result.error, "")
         }
     }
@@ -30,7 +30,6 @@ final class CoverageSubcommandTests: XCTestCase {
                         ]
         ) { result in
             XCTAssertEqual(result.terminationStatus, EXIT_SUCCESS)
-            XCTAssertEqual(result.output, "")
             XCTAssertEqual(result.error, "")
 
             do {

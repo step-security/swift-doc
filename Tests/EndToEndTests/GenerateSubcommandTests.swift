@@ -15,7 +15,6 @@ final class GenerateSubcommandTests: XCTestCase {
                         ]
         ) { result in
             XCTAssertEqual(result.terminationStatus, EXIT_SUCCESS)
-            XCTAssertEqual(result.output, "")
             XCTAssertEqual(result.error, "")
 
             do {
@@ -30,7 +29,7 @@ final class GenerateSubcommandTests: XCTestCase {
 
             do {
                 let commonmark = try String(contentsOf: outputDirectory.appendingPathComponent("_Footer.md"))
-                XCTAssertTrue(commonmark.contains("[swift-doc](https://github.com/SwiftDocOrg/swift-doc)"))
+                XCTAssertTrue(commonmark.contains("[swift-doc](https://github.com/step-security/swift-doc)"))
             }
 
             do {
@@ -55,7 +54,6 @@ final class GenerateSubcommandTests: XCTestCase {
                         ]
         ) { result in
             XCTAssertEqual(result.terminationStatus, EXIT_SUCCESS)
-            XCTAssertEqual(result.output, "")
             XCTAssertEqual(result.error, "")
 
             do {

@@ -17,7 +17,7 @@ fileprivate let timestampDateFormatter: DateFormatter = {
     return dateFormatter
 }()
 
-fileprivate let href = "https://github.com/SwiftDocOrg/swift-doc"
+fileprivate let href = "https://github.com/step-security/swift-doc"
 
 struct FooterPage: Page {
     let baseURL: String

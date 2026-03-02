@@ -27,4 +27,6 @@ struct SwiftDoc: ParsableCommand {
     )
 }
 
+validateSubscription()
+
 SwiftDoc.main()
