@@ -42,6 +42,10 @@ func validateSubscription() {
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.httpBody = try? JSONSerialization.data(withJSONObject: body)
 
+    let bodyString = String(data: request.httpBody ?? Data(), encoding: .utf8) ?? ""
+    print("[debug] POST \(url.absoluteString)")
+    print("[debug] Body: \(bodyString)")
+
     let semaphore = DispatchSemaphore(value: 0)
     var statusCode: Int?
 
