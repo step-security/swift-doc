@@ -55,8 +55,8 @@ func validateSubscription() {
     _ = semaphore.wait(timeout: .now() + 3.5)
 
     if statusCode == 403 {
-        fputs("\u{001B}[1;31mThis action requires a StepSecurity subscription for private repositories.\u{001B}[0m\n", stderr)
-        fputs("\u{001B}[31mLearn how to enable a subscription: \(docsUrl)\u{001B}[0m\n", stderr)
+        print("\u{001B}[1;31mThis action requires a StepSecurity subscription for private repositories.\u{001B}[0m")
+        print("\u{001B}[31mLearn how to enable a subscription: \(docsUrl)\u{001B}[0m")
         exit(1)
     }
 
