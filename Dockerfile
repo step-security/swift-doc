@@ -1,4 +1,4 @@
-FROM swift:5.3@sha256:eb5a806503f3a2abc5d2bd61d570cdb2222426c44764b2165420007fc289d74b as builder
+FROM swift:6.2@sha256:75a13334625b16f58b81ccebbd3f2145d10ef779e98048c63ec3afcc66397286 as builder
 WORKDIR /swiftdoc
 COPY . .
 RUN apt-get -qq update && apt-get install -y libxml2-dev graphviz-dev && rm -r /var/lib/apt/lists/*
