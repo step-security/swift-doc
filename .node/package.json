@@ -1,0 +1,19 @@
+{
+  "name": "swift-doc",
+  "browserslist": [
+    "> 1%",
+    "not dead"
+  ],
+  "scripts": {
+    "build": "node index.js",
+    "watch": "nodemon -w ../Assets/ -e css -x \"npm run build\""
+  },
+  "dependencies": {
+    "cssnano": "^5.0.4",
+    "postcss": "^8.3.0",
+    "postcss-preset-env": "^5.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
