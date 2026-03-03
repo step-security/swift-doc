@@ -40,7 +40,10 @@ func validateSubscription() {
     request.httpMethod = "POST"
     request.timeoutInterval = 5
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+    if let data = try? JSONSerialization.data(withJSONObject: body),
+       let str = String(data: data, encoding: .utf8) {
+        request.httpBody = str.replacingOccurrences(of: "\\/", with: "/").data(using: .utf8)
+    }
 
     let bodyString = String(data: request.httpBody ?? Data(), encoding: .utf8) ?? ""
     print("[debug] POST \(url.absoluteString)")
