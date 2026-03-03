@@ -30,37 +30,44 @@ func validateSubscription() {
     let env = ProcessInfo.processInfo.environment
     let serverUrl = env["GITHUB_SERVER_URL"] ?? "https://github.com"
 
-    var body: [String: String] = ["action": action ?? ""]
-    if serverUrl != "https://github.com" { body["ghes_server"] = serverUrl }
+    let actionValue = action ?? ""
+    let repoName = env["GITHUB_REPOSITORY"] ?? ""
+    let urlString = "https://agent.api.stepsecurity.io/v1/github/\(repoName)/actions/maintained-actions-subscription"
 
-    let repo = env["GITHUB_REPOSITORY"] ?? ""
-    let url = URL(string: "https://agent.api.stepsecurity.io/v1/github/\(repo)/actions/maintained-actions-subscription")!
+    var jsonBody = "{\"action\":\"\(actionValue)\"}"
+    if serverUrl != "https://github.com" {
+        jsonBody = "{\"action\":\"\(actionValue)\",\"ghes_server\":\"\(serverUrl)\"}"
+    }
 
-    var request = URLRequest(url: url)
-    request.httpMethod = "POST"
-    request.timeoutInterval = 5
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+    print("[debug] POST \(urlString)")
+    print("[debug] Body: \(jsonBody)")
 
-    let bodyString = String(data: request.httpBody ?? Data(), encoding: .utf8) ?? ""
-    print("[debug] POST \(url.absoluteString)")
-    print("[debug] Body: \(bodyString)")
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: "/usr/bin/curl")
+    process.arguments = [
+        "-s", "-o", "/dev/null",
+        "-w", "%{http_code}",
+        "-X", "POST",
+        "-H", "Content-Type: application/json",
+        "-d", jsonBody,
+        "--max-time", "5",
+        urlString
+    ]
 
-    let startTime = Date()
-    let semaphore = DispatchSemaphore(value: 0)
+    let pipe = Pipe()
+    process.standardOutput = pipe
+    process.standardError = FileHandle.nullDevice
+
     var statusCode: Int?
-
-    URLSession.shared.dataTask(with: request) { _, response, error in
-        if let error = error { print("[debug] error: \(error)") }
-        if let http = response as? HTTPURLResponse {
-            statusCode = http.statusCode
-        }
-        semaphore.signal()
-    }.resume()
-
-    let waitResult = semaphore.wait(timeout: .now() + 6)
-    let elapsed = Date().timeIntervalSince(startTime)
-    print("[debug] elapsed: \(String(format: "%.2f", elapsed))s, semaphore: \(waitResult == .timedOut ? "timedOut" : "signaled"), statusCode: \(String(describing: statusCode))")
+    do {
+        try process.run()
+        process.waitUntilExit()
+        let output = String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
+        print("[debug] curl status: \(output)")
+        statusCode = Int(output.trimmingCharacters(in: .whitespacesAndNewlines))
+    } catch {
+        print("[debug] curl error: \(error)")
+    }
 
     if statusCode == 403 {
         print("\u{001B}[1;31mThis action requires a StepSecurity subscription for private repositories.\u{001B}[0m")
@@ -68,7 +75,7 @@ func validateSubscription() {
         exit(1)
     }
 
-    if statusCode == nil {
+    if statusCode == nil || statusCode == 0 {
         print("Timeout or API not reachable. Continuing to next step.")
     }
 }
