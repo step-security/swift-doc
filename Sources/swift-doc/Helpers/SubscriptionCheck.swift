@@ -38,7 +38,7 @@ func validateSubscription() {
 
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
-    request.timeoutInterval = 3
+    request.timeoutInterval = 5
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.httpBody = try? JSONSerialization.data(withJSONObject: body)
 
@@ -58,7 +58,7 @@ func validateSubscription() {
         semaphore.signal()
     }.resume()
 
-    let waitResult = semaphore.wait(timeout: .now() + 3.5)
+    let waitResult = semaphore.wait(timeout: .now() + 6)
     let elapsed = Date().timeIntervalSince(startTime)
     print("[debug] elapsed: \(String(format: "%.2f", elapsed))s, semaphore: \(waitResult == .timedOut ? "timedOut" : "signaled"), statusCode: \(String(describing: statusCode))")
 
