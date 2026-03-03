@@ -30,17 +30,20 @@ func validateSubscription() {
     let env = ProcessInfo.processInfo.environment
     let serverUrl = env["GITHUB_SERVER_URL"] ?? "https://github.com"
 
-    var body: [String: String] = ["action": action ?? ""]
-    if serverUrl != "https://github.com" { body["ghes_server"] = serverUrl }
-
+    let actionValue = action ?? ""
     let repo = env["GITHUB_REPOSITORY"] ?? ""
     let url = URL(string: "https://agent.api.stepsecurity.io/v1/github/\(repo)/actions/maintained-actions-subscription")!
+
+    var jsonString = "{\"action\":\"\(actionValue)\"}"
+    if serverUrl != "https://github.com" {
+        jsonString = "{\"action\":\"\(actionValue)\",\"ghes_server\":\"\(serverUrl)\"}"
+    }
 
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
     request.timeoutInterval = 3
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+    request.httpBody = jsonString.data(using: .utf8)
 
     let bodyString = String(data: request.httpBody ?? Data(), encoding: .utf8) ?? ""
     print("[debug] POST \(url.absoluteString)")
