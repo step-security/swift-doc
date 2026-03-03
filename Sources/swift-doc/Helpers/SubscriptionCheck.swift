@@ -30,36 +30,37 @@ func validateSubscription() {
     let env = ProcessInfo.processInfo.environment
     let serverUrl = env["GITHUB_SERVER_URL"] ?? "https://github.com"
 
-    let actionValue = action ?? ""
+    var body: [String: String] = ["action": action ?? ""]
+    if serverUrl != "https://github.com" { body["ghes_server"] = serverUrl }
+
     let repo = env["GITHUB_REPOSITORY"] ?? ""
     let url = URL(string: "https://agent.api.stepsecurity.io/v1/github/\(repo)/actions/maintained-actions-subscription")!
-
-    var jsonString = "{\"action\":\"\(actionValue)\"}"
-    if serverUrl != "https://github.com" {
-        jsonString = "{\"action\":\"\(actionValue)\",\"ghes_server\":\"\(serverUrl)\"}"
-    }
 
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
     request.timeoutInterval = 3
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.httpBody = jsonString.data(using: .utf8)
+    request.httpBody = try? JSONSerialization.data(withJSONObject: body)
 
     let bodyString = String(data: request.httpBody ?? Data(), encoding: .utf8) ?? ""
     print("[debug] POST \(url.absoluteString)")
     print("[debug] Body: \(bodyString)")
 
+    let startTime = Date()
     let semaphore = DispatchSemaphore(value: 0)
     var statusCode: Int?
 
-    URLSession.shared.dataTask(with: request) { _, response, _ in
+    URLSession.shared.dataTask(with: request) { _, response, error in
+        if let error = error { print("[debug] error: \(error)") }
         if let http = response as? HTTPURLResponse {
             statusCode = http.statusCode
         }
         semaphore.signal()
     }.resume()
 
-    _ = semaphore.wait(timeout: .now() + 3.5)
+    let waitResult = semaphore.wait(timeout: .now() + 3.5)
+    let elapsed = Date().timeIntervalSince(startTime)
+    print("[debug] elapsed: \(String(format: "%.2f", elapsed))s, semaphore: \(waitResult == .timedOut ? "timedOut" : "signaled"), statusCode: \(String(describing: statusCode))")
 
     if statusCode == 403 {
         print("\u{001B}[1;31mThis action requires a StepSecurity subscription for private repositories.\u{001B}[0m")
