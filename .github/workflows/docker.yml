@@ -39,9 +39,6 @@ jobs:
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
 
-        - name: Set up QEMU for ARM builds
-          uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
-
         - name: Set up Docker Buildx
           uses: step-security/setup-buildx-action@c60a792b446ef83310733d5cd9d0c8d6870d043f # v3.12.0
 
@@ -50,6 +47,6 @@ jobs:
           with:
             context: .
             push: true
-            platforms: linux/amd64,linux/arm64
+            platforms: linux/amd64
             tags: |
               ghcr.io/${{ github.repository }}:${{ github.event.inputs.release_tag }}
