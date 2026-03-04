@@ -1,0 +1,4 @@
+# CVE-2023-24329: Python urllib.parse URL blocklisting bypass
+# libpython2.7 and libpython3.6 are transitive apt dependencies (via graphviz-dev)
+# not linked or used by swift-doc binary at runtime (verified via ldd)
+CVE-2023-24329
