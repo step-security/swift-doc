@@ -28,7 +28,7 @@ inputs:
 
 runs:
   using: "docker"
-  image: "docker://ghcr.io/step-security/swift-doc:v1.0.0@sha256:fa44c3d643cc752998b982dc49b6ddb57734677c240d38a02ccb33259b6af1b8" #v1.0.0
+  image: "docker://ghcr.io/step-security/swift-doc:v1.0.0@sha256:76ac5fe3013e10c09a7e6fdf57bcacac85d1ecd0b4f9dfc4caed17c51c90c31c" #v1.0.0
   args:
     [
       generate,
